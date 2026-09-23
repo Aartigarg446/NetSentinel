@@ -1,0 +1,43 @@
+@"
+services:
+
+  backend:
+    build:
+      context: ./backend
+    container_name: netsentinel-backend
+    ports:
+      - "5000:5000"
+    environment:
+      DB_HOST: host.docker.internal
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: netsentinel-frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+"@ | Set-Content docker-compose.yml
+@"
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: netsentinel-backend
+    ports:
+      - "5000:5000"
+    environment:
+      DB_HOST: host.docker.internal
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: netsentinel-frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+"@ | Set-Content -Encoding utf8 docker-compose.yml
