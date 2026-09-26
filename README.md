@@ -17,218 +17,428 @@ Instead of manually checking multiple servers, NetSentinel sends automated HTTP 
 
 ---
 
+## ✨ Features
+
+### 🖥️ Server Monitoring
+
+- Add servers using server name and URL
+- Automated HTTP health checks
+- Detect server **Online / Offline** status
+- Track HTTP status codes
+- Measure server response time
+- Handle request failures and timeouts
+- Maintain monitoring history
+
+### 📊 Monitoring Dashboard
+
+- Server availability overview
+- Current server status
+- HTTP status information
+- Response time tracking
+- Monitoring history
+- Dashboard statistics
+- Analytics visualization
+- Periodic dashboard refresh
+
+### 📈 Analytics
+
+- Average response time
+- Online server count
+- Offline server count
+- Total monitoring records
+- Response-time history
+- Monitoring trends
+
+### 📝 Monitoring Logs
+
+Each monitoring check stores information such as:
+
+- Server ID
+- Server status
+- HTTP status code
+- Response time
+- Check timestamp
+
+### ✅ Validation & Error Handling
+
+- Server name validation
+- URL validation
+- API error handling
+- Database error handling
+- Timeout handling
+- Invalid request handling
+
+---
+
+# 🔄 How NetSentinel Works
+
+```text
+                         NETSENTINEL
+                              │
+                 ┌────────────┴────────────┐
+                 ↓                         ↓
+          React Dashboard             Add Server
+                 │                         │
+                 └────────────┬────────────┘
+                              ↓
+                         REST APIs
+                              ↓
+                    Node.js + Express
+                              ↓
+                     Monitoring Logic
+                              ↓
+                       HTTP Request
+                              ↓
+                       Target Server
+                              │
                     ┌─────────┴─────────┐
                     ↓                   ↓
-                 Response      ## ✨ Features
+                 Response          Timeout / Error
+                    ↓                   ↓
+                 ONLINE              OFFLINE
+                    │                   │
+                    └─────────┬─────────┘
+                              ↓
+                       MySQL Database
+                              ↓
+                         Analytics
+                              ↓
+                      React Dashboard
 
-✨ Features
 
-🖥️ Add and monitor multiple servers using name and URL
+⚡ Monitoring Flow
 
-🟢 Detect Online / Offline server status
 
-⚡ Measure HTTP response time
+🟢 Online Server
+HTTP Request Sent
+       ↓
+Server Responds
+       ↓
+Response Time Calculated
+       ↓
+HTTP Status Code Received
+       ↓
+Server Marked ONLINE
+       ↓
+Monitoring Result Stored
 
-📡 Track HTTP status codes
 
-📝 Store monitoring history in MySQL
+🔴 Offline Server
+HTTP Request Sent
+       ↓
+Request Fails / Times Out
+       ↓
+Server Marked OFFLINE
+       ↓
+Monitoring Result Stored
 
-📊 View statistics and response-time analytics
 
-🔄 Refresh dashboard data automatically
 
-🛡️ Handle request failures, timeouts, validation, and API/database errors
 
-🐳 Dockerized backend support
+🏗️ System Architecture
 
-🔄 How It Works
+                    ┌─────────────────────┐
+                    │    React Frontend   │
+                    │      Dashboard      │
+                    └──────────┬──────────┘
+                               │
+                          Axios / HTTP
+                               │
+                               ↓
+                    ┌─────────────────────┐
+                    │   Node.js + Express │
+                    │      Backend        │
+                    └──────────┬──────────┘
+                               │
+             ┌─────────────────┼─────────────────┐
+             │                 │                 │
+             ↓                 ↓                 ↓
+       Server APIs       Monitoring APIs   Analytics APIs
+             │                 │                 │
+             └─────────────────┼─────────────────┘
+                               ↓
+                    ┌─────────────────────┐
+                    │ Monitoring Logic    │
+                    └──────────┬──────────┘
+                               ↓
+                       HTTP Requests
+                               ↓
+                       Target Servers
+                               │
+                               ↓
+                    ┌─────────────────────┐
+                    │      MySQL DB       │
+                    └──────────┬──────────┘
+                               │
+                    ┌──────────┴──────────┐
+                    ↓                     ↓
+                 servers           monitoring_logs
+                    │                     │
+                    └──────────┬──────────┘
+                               ↓
+                    Analytics / Dashboard
 
-User
- ↓
-React Dashboard
- ↓
-Axios / REST API
- ↓
-Node.js + Express
- ↓
-Monitoring Logic
- ↓
-HTTP Request → Target Server
- ↓
-┌───────────────┬────────────────┐
-│ Response      │ Timeout/Error  │
-↓               ↓
-ONLINE          OFFLINE
-│               │
-└───────┬───────┘
-        ↓
-Measure Response Time
-        ↓
-Store Result in MySQL
-        ↓
-Analytics APIs
-        ↓
-React Dashboard
 
-🏗️ Architecture
 
-┌──────────────────────┐
-│     React Frontend   │
-│  Dashboard + Charts  │
-└──────────┬───────────┘
-           │ Axios / REST
-           ↓
-┌──────────────────────┐
-│   Node.js + Express  │
-│   REST API + Logic   │
-└───────┬────────┬─────┘
-        │        │
-        │        └──────────→ Target HTTP Servers
-        ↓
-┌──────────────────────┐
-│      MySQL Database  │
-│  servers + log data  │
-└──────────────────────┘
-
-🔌 API Endpoints
-
-Method
-
-Endpoint
-
-Purpose
-
-GET
-
-/api/servers
-
-Get registered servers
-
-POST
-
-/api/servers
-
-Add a server
-
-GET
-
-/api/logs
-
-Get monitoring logs
-
-GET
-
-/api/stats
-
-Get dashboard statistics
-
-GET
-
-/api/analytics
-
-Get analytics data
-
-🗃️ Database Design
-
-servers
-
-Stores registered server details.
-
-id
-name
-url
-created_at
-
-monitoring_logs
-
-Stores monitoring results.
-
-id
-server_id
-status
-status_code
-response_time
-checked_at
-
-Relationship: One server → Many monitoring logs.
 
 🛠️ Tech Stack
 
-Frontend: React.js, Axios, React Hooks, Recharts, HTML5, CSS3
-Backend: Node.js, Express.js, REST APIs, CORS
-Database: MySQL, SQL
-Dev Tools: Docker, Git, GitHub, Postman, VS Code
+
+Frontend
+React.js
+Axios
+React Hooks
+Recharts
+HTML5
+CSS3
+
+
+Backend
+Node.js
+Express.js
+REST APIs
+CORS
+JSON
+HTTP Request Handling
+
+
+Database
+MySQL
+SQL
+Relational Database Design
+
+
+Tools
+Git
+GitHub
+Docker
+Postman
+VS Code
+
+
+
+🔁 Example API Flow
+
+
+Fetch Servers
+React Dashboard
+       ↓
+Axios GET Request
+       ↓
+GET /api/servers
+       ↓
+Express Route
+       ↓
+MySQL Query
+       ↓
+Server Records
+       ↓
+JSON Response
+       ↓
+React Dashboard
+
+Add Server
+
+
+User enters Server Name + URL
+              ↓
+        React Form
+              ↓
+       POST /api/servers
+              ↓
+       Express Backend
+              ↓
+          Validation
+              ↓
+       MySQL INSERT
+              ↓
+       Success Response
+              ↓
+       Dashboard Refresh
+
+⏱️ Automated Monitoring
+
+NetSentinel performs monitoring automatically at regular intervals.
+
+Start Monitoring
+       ↓
+Check Server
+       ↓
+Measure Response
+       ↓
+Determine Status
+       ↓
+Store Result
+       ↓
+Wait for Next Interval
+       ↓
+Check Again
+
+📈 Dashboard Analytics
+
+The dashboard focuses on important monitoring metrics.
+
+┌─────────────────────────────────────┐
+│           ONLINE SERVERS            │
+│     Currently available servers     │
+└─────────────────────────────────────┘
+
+┌─────────────────────────────────────┐
+│           OFFLINE SERVERS           │
+│   Currently unavailable servers     │
+└─────────────────────────────────────┘
+
+┌─────────────────────────────────────┐
+│       MONITORING RECORDS            │
+│        Total checks stored          │
+└─────────────────────────────────────┘
+
+┌─────────────────────────────────────┐
+│        AVERAGE RESPONSE TIME        │
+│    Average server response time     │
+└─────────────────────────────────────┘
+
+🧪 API Testing with Postman
+
+Postman can be used to test the backend APIs independently.
+
+Example endpoints:
+
+GET  /api/servers
+POST /api/servers
+GET  /api/logs
+GET  /api/stats
+GET  /api/analytics
+
+This makes it easier to verify:
+
+Request data
+API responses
+HTTP status codes
+Backend validation
+Error handling
+
+
+🐳 Docker
+
+NetSentinel also supports containerized deployment using Docker.
+
+Docker helps provide a consistent environment for running the application components.
+
+Example:
+
+docker build -t netsentinel-backend .
+
+Run backend container:
+
+docker run -p 5000:5000 netsentinel-backend
+
 
 📁 Project Structure
 
+
 NetSentinel/
+│
 ├── backend/
 │   ├── config/
 │   ├── routes/
 │   ├── server.js
-│   └── package.json
+│   ├── package.json
+│   └── .env
+│
 ├── frontend/
 │   ├── src/
+│   ├── public/
 │   ├── package.json
 │   └── ...
+│
 ├── .gitignore
-└── README.md
+├── README.md
+└── ...
 
-🚀 Run Locally
-
-Backend
-
+🚀 Installation & Setup
+1. Clone Repository
+git clone https://github.com/Aartigarg446/NetSentinel.git
+cd NetSentinel
+2. Backend Setup
 cd backend
+
+Install dependencies:
+
 npm install
-node server.js
 
-Backend:
-
-http://localhost:5000
-
-Frontend
-
-cd frontend
-npm install
-npm run dev
-
-Environment Variables
-
-Create backend/.env:
+Create a .env file:
 
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=your_password
 DB_NAME=netsentinel
 
-🧪 API Testing
+Start backend:
 
-Use Postman to test the REST APIs, request payloads, responses, status codes, and error handling.
+node server.js
 
-🐳 Docker
+Backend runs on:
 
-docker build -t netsentinel-backend .
-docker run -p 5000:5000 netsentinel-backend
+http://localhost:5000
+3. Frontend Setup
 
-🧠 Core Concepts
+Open another terminal and move to frontend:
 
-REST APIs • HTTP Monitoring • Response-Time Measurement • HTTP Status Codes • MySQL • SQL • Relational Database • Monitoring Logs • React Dashboard • Analytics • Error Handling • Docker
+cd frontend
+
+Install dependencies:
+
+npm install
+
+Start frontend:
+
+npm run dev
+
+Open the local URL displayed by Vite.
+
+🔐 Environment Variables
+
+Sensitive configuration should be stored in .env.
+
+Example:
+
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=your_password
+DB_NAME=netsentinel
+
+Important: Never commit real passwords, API keys, or database credentials to GitHub.
 
 🔮 Future Improvements
 
-Email / webhook alerts
+Possible future enhancements include:
 
+Email alerts when a server goes offline
+Webhook notifications
 Configurable monitoring intervals
-
-Authentication and role-based access
-
+Response-time threshold alerts
+Advanced monitoring filters
+Historical performance reports
+User authentication
+Role-based access control
 Cloud deployment
+Multi-server alerting
+Advanced analytics
 
-Advanced monitoring analytics
 
-👨‍💻 Author
-
+👩‍💻 Author
 Aarti Garg
+
 Computer Science Engineering Student
 
-GitHub: https://github.com/Aartigarg446
+GitHub:
+https://github.com/Aartigarg446
+
+LinkedIn:
+https://www.linkedin.com/in/aarti-garg-3164142a7
+
+<p align="center">
+🚦 NetSentinel
+Monitor Servers. Track Performance. Analyze Reliability.
+</p> ```
