@@ -438,7 +438,4 @@ https://github.com/Aartigarg446
 LinkedIn:
 https://www.linkedin.com/in/aarti-garg-3164142a7
 
-<p align="center">
-🚦 NetSentinel
-Monitor Servers. Track Performance. Analyze Reliability.
-</p> ```
+
