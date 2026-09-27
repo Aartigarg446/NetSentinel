@@ -38,7 +38,7 @@ function App() {
     }
 
     axios
-      .post("http://localhost:5000/api/servers", {
+      .post("https://net-sentinel-qwlq.vercel.app/api/servers", {
         name: serverName,
         url: serverUrl
       })
@@ -49,7 +49,7 @@ function App() {
         setServerUrl("");
 
         axios
-          .get("http://localhost:5000/api/servers")
+          .get("https://net-sentinel-qwlq.vercel.app/api/servers")
           .then((response) => {
             setServers(response.data);
           })
@@ -90,7 +90,7 @@ function App() {
     const fetchDashboardData = () => {
       // Fetch servers
       axios
-        .get("http://localhost:5000/api/servers")
+        .get("https://net-sentinel-qwlq.vercel.app/api/servers")
         .then((response) => {
           setServers(response.data);
         })
@@ -101,7 +101,7 @@ function App() {
 
       // Fetch logs
       axios
-        .get("http://localhost:5000/api/logs")
+        .get("https://net-sentinel-qwlq.vercel.app/api/logs")
         .then((response) => {
           setLogs(response.data);
         })
@@ -112,7 +112,7 @@ function App() {
 
       // Fetch dashboard statistics
       axios
-        .get("http://localhost:5000/api/stats")
+        .get("https://net-sentinel-qwlq.vercel.app/api/stats")
         .then((response) => {
           setStats(response.data);
         })
@@ -123,7 +123,7 @@ function App() {
 
       // Fetch analytics
       axios
-        .get("http://localhost:5000/api/analytics")
+        .get("https://net-sentinel-qwlq.vercel.app/api/analytics")
         .then((response) => {
           setAnalytics([...response.data].reverse());
         })
